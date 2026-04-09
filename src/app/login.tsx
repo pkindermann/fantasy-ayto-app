@@ -1,15 +1,56 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+
+const API_URL = "http://localhost:8080/api/auth/login";
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (email && password) {
-      router.replace("/");
+      setLoading(true);
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: email,
+            password: password,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const token = data.data?.token;
+          
+          if (token) {
+            // Store token and username in AsyncStorage
+            await AsyncStorage.setItem("authToken", token);
+            await AsyncStorage.setItem("username", email);
+            alert("Login successful!");
+            router.replace("/");
+          } else {
+            alert("No token received from server");
+          }
+        } else {
+          const errorData = await response.json();
+          alert(errorData.message || "Login failed");
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        alert("Error: " + (error instanceof Error ? error.message : "Unknown error"));
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert("Please fill in all fields");
     }
   };
 
@@ -36,8 +77,14 @@ export default function Login() {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity 
+        style={[styles.button, loading && styles.buttonDisabled]} 
+        onPress={handleLogin}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>
+          {loading ? "Logging in..." : "Login"}
+        </Text>
       </TouchableOpacity>
 
       <View style={styles.linkContainer}>
@@ -80,6 +127,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
+  },
+  buttonDisabled: {
+    backgroundColor: "#007AFF80",
   },
   buttonText: {
     color: "white",
