@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-const API_URL = "http://localhost:8080/api/auth/register";
+const API_URL = `${process.env.EXPO_PUBLIC_API_URL}/api/auth/register`;
 // For native apps: "http://172.19.253.168:8080/api/auth/register"
 // For Android Emulator: "http://10.0.2.2:8080/api/auth/register"
 

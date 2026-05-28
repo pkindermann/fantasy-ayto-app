@@ -68,7 +68,15 @@ export default function Index() {
           </TouchableOpacity>
         </>
       ) : (
-        <Text style={styles.loggedInText}>You are logged in as {username}</Text>
+        <>
+          <Text style={styles.loggedInText}>You are logged in as {username}</Text>
+          <TouchableOpacity
+            style={[styles.button, styles.matchButton]}
+            onPress={() => router.push("/match")}
+          >
+            <Text style={styles.buttonText}>Find Your Matches</Text>
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );
@@ -136,6 +144,9 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     backgroundColor: "#34C759",
+  },
+  matchButton: {
+    backgroundColor: "#FF1493",
   },
   buttonText: {
     color: "white",

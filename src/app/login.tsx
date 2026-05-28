@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-const API_URL = "http://localhost:8080/api/auth/login";
+const API_URL = `${process.env.EXPO_PUBLIC_API_URL}/api/auth/login`;
 
 export default function Login() {
   const router = useRouter();
