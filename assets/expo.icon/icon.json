@@ -21,7 +21,7 @@
           "name" : "grid"
         }
       ],
-      "shadow" : {
+      "boxShadow" : {
         "kind" : "neutral",
         "opacity" : 0.5
       },

@@ -25,6 +25,16 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Deploy
+
+Set `EXPO_PUBLIC_API_URL` to the backend that the deployed web app should use, then run the deploy command:
+
+```bash
+EXPO_PUBLIC_API_URL=https://your-backend.example.com npm run deploy
+```
+
+`npm run deploy` first runs Expo's web export and then publishes the generated `dist` directory. Expo reads `EXPO_PUBLIC_API_URL` during the export, so the value is bundled into the deployed app. Run the command again whenever the backend URL changes. Do not include a trailing slash in the URL because the app appends paths such as `/api/auth/login`.
+
 ## Get a fresh project
 
 When you're ready, run:
